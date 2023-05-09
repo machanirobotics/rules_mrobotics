@@ -1,3 +1,3 @@
-# Genesis rules
+# MR bazel rules
 
-Various bazel rules used by genesis.
+Various bazel rules used by MR.
