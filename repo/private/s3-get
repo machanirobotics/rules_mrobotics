@@ -1,0 +1,383 @@
+#!/usr/bin/env bash
+#
+# Download a file from S3
+# (c) 2015 Chi Vinh Le <cvl@winged.kiwi>
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy of
+# the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+# Modified this script to suit our needs - Shyamant Achar
+
+set -euo pipefail
+
+readonly METHOD="GET"
+
+# Constants
+readonly VERSION="0.0.1"
+
+# Exit codes
+readonly INVALID_USAGE_EXIT_CODE=1
+readonly INVALID_USER_DATA_EXIT_CODE=2
+readonly INVALID_ENVIRONMENT_EXIT_CODE=3
+
+##
+# Write error to stderr
+# Arguments:
+#   $1 string to output
+##
+err() {
+  echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')] Error: $@" >&2
+}
+
+
+##
+# Display version and exit
+##
+showVersionAndExit() {
+  printf "$VERSION\n"
+  exit
+}
+
+##
+# Helper for parsing the command line.
+##
+assertArgument() {
+  if [[ $# -lt 2 ]]; then
+    err "Option $1 needs an argument."
+    exit $INVALID_USAGE_EXIT_CODE
+  fi
+}
+
+##
+# Asserts given resource path
+# Arguments:
+#   $1 string resource path
+##
+assertResourcePath() {
+  if [[ $1 = !(/*) ]]; then
+    err "Resource should start with / e.g. /bucket/file.ext"
+    exit $INVALID_USAGE_EXIT_CODE
+  fi
+}
+
+##
+# Check for valid environment. Exit if invalid.
+##
+checkEnvironment()
+{
+  programs=(openssl curl printf echo sed awk od date pwd dirname)
+  for program in "${programs[@]}"; do
+    if [ ! -x "$(which $program)" ]; then
+      err "$program is required to run"
+      exit $INVALID_ENVIRONMENT_EXIT_CODE
+    fi
+  done
+  if [ ! -x "$(which sha256sum)" ]; then
+    if [ ! -x "$(which shasum)" ]; then
+      err "sha256sum or shasum is required to run"
+      exit $INVALID_ENVIRONMENT_EXIT_CODE
+    else
+      SHACMD="shasum -a 256 "
+    fi
+  else
+    SHACMD="sha256sum "
+  fi
+}
+
+##
+# Convert string to hex with max line size of 256
+# Arguments:
+#   $1 string to convert
+# Returns:
+#   string hex
+##
+hex256() {
+  printf "$1" | od -A n -t x1 | sed ':a;N;$!ba;s/[\n ]//g'
+}
+
+##
+# Calculate sha256 hash
+# Arguments:
+#   $1 string to hash
+# Returns:
+#   string hash
+##
+sha256Hash() {
+  local output=$(printf "$1" | $SHACMD)
+  echo "${output%% *}"
+}
+
+##
+# Calculate sha256 hash of file
+# Arguments:
+#   $1 file path
+# Returns:
+#   string hash
+##
+sha256HashFile() {
+  local output=$($SHACMD $1)
+  echo "${output%% *}"
+}
+
+##
+# Generate HMAC signature using SHA256
+# Arguments:
+#   $1 signing key in hex
+#   $2 string data to sign
+# Returns:
+#   string signature
+##
+hmac_sha256() {
+  printf "$2" | openssl dgst -binary -hex -sha256 -mac HMAC -macopt hexkey:$1 \
+              | sed 's/^.* //'
+}
+
+##
+# Sign data using AWS Signature Version 4
+# Arguments:
+#   $1 AWS Secret Access Key
+#   $2 yyyymmdd
+#   $3 AWS Region
+#   $4 AWS Service
+#   $5 string data to sign
+# Returns:
+#   signature
+##
+sign() {
+  local kSigning=$(hmac_sha256 $(hmac_sha256 $(hmac_sha256 \
+                 $(hmac_sha256 $(hex256 "AWS4$1") $2) $3) $4) "aws4_request")
+  hmac_sha256 "${kSigning}" "$5"
+}
+
+##
+# Get endpoint of specified region
+# Arguments:
+#   $1 region
+# Returns:
+#   amazon andpoint
+##
+convS3RegionToEndpoint() {
+  case "$1" in
+    us-east-1) echo "s3.amazonaws.com"
+      ;;
+    *) echo s3-${1}.amazonaws.com
+      ;;
+    esac
+}
+
+##
+# Perform request to S3
+# Uses the following Globals:
+#   METHOD                string
+#   AWS_ACCESS_KEY_ID     string
+#   AWS_SECRET_ACCESS_KEY string
+#   AWS_REGION            string
+#   RESOURCE_PATH         string
+#   FILE_TO_UPLOAD        string
+#   CONTENT_TYPE          string
+#   PUBLISH               bool
+#   DEBUG                 bool
+#   VERBOSE               bool
+##
+performRequest() {
+  local timestamp=$(date -u "+%Y-%m-%d %H:%M:%S")
+  local isoTimestamp=$(date -ud "${timestamp}" "+%Y%m%dT%H%M%SZ")
+  local dateScope=$(date -ud "${timestamp}" "+%Y%m%d")
+  local host=$(convS3RegionToEndpoint "${AWS_REGION}")
+
+  local payloadHash=$(sha256Hash "")
+
+  local cmd=("curl")
+  local headers=
+  local headerList=
+
+  if [[ ${DEBUG} != true ]]; then
+    cmd+=("--fail")
+  else
+    cmd+=("--verbose")
+  fi
+
+  if [[ ${VERBOSE} != true ]]; then
+    cmd+=("-s")
+  fi
+
+  if [[ ${METHOD} == "PUT" ]]; then
+    cmd+=("-T" "${FILE_TO_UPLOAD}")
+  fi
+  cmd+=("-X" "${METHOD}")
+
+  cmd+=("-H" "Host: ${host}")
+  headers+="host:${host}\n"
+  headerList+="host;"
+
+  cmd+=("-H" "x-amz-content-sha256: ${payloadHash}")
+  headers+="x-amz-content-sha256:${payloadHash}\n"
+  headerList+="x-amz-content-sha256;"
+
+  cmd+=("-H" "x-amz-date: ${isoTimestamp}")
+  headers+="x-amz-date:${isoTimestamp}"
+  headerList+="x-amz-date"
+
+  # Generate canonical request
+  local canonicalRequest="${METHOD}
+${RESOURCE_PATH}
+
+${headers}
+
+${headerList}
+${payloadHash}"
+
+  # Generated request hash
+  local hashedRequest=$(sha256Hash "${canonicalRequest}")
+
+  # Generate signing data
+  local stringToSign="AWS4-HMAC-SHA256
+${isoTimestamp}
+${dateScope}/${AWS_REGION}/s3/aws4_request
+${hashedRequest}"
+
+  # Sign data
+  local signature=$(sign "${AWS_SECRET_ACCESS_KEY}" "${dateScope}" "${AWS_REGION}" \
+                   "s3" "${stringToSign}")
+
+  local authorizationHeader="AWS4-HMAC-SHA256 Credential=${AWS_ACCESS_KEY_ID}/${dateScope}/${AWS_REGION}/s3/aws4_request, SignedHeaders=${headerList}, Signature=${signature}"
+  cmd+=("-H" "Authorization: ${authorizationHeader}")
+
+  if [[ ! -z OUTPUT_FILE ]]; then
+    cmd+=("-o" "$OUTPUT_FILE")
+  fi
+
+  local protocol="https"
+  cmd+=("${protocol}://${host}${RESOURCE_PATH}")
+
+  # Curl
+  "${cmd[@]}"
+}
+
+
+##
+# Print help and exit
+# Arguments:
+#   $1 int exit code
+# Output:
+#   string help
+##
+printUsageAndExitWith() {
+  printf "Usage:\n"
+  printf "  ${SCRIPT_NAME} [-vi] [-k key] [-s file] [-r region] resource_path\n"
+  printf "  ${SCRIPT_NAME} -h\n"
+  printf "Example:\n"
+  printf "  ${SCRIPT_NAME} -k key -s secret -r eu-central-1 /bucket/file.ext\n"
+  printf "Options:\n"
+  printf "     --debug\tEnable debugging mode\n"
+  printf "  -h,--help\tPrint this help\n"
+  printf "  -e,--env\tPath to env file containing credentials"
+  printf "  -o,--output\tPath to the output file"
+  printf "  -r,--region\tAWS S3 Region. Default to environment variable AWS_DEFAULT_REGION\n"
+  printf "  -v,--verbose\tVerbose output"
+  printf "     --version\tShow version\n"
+  exit $1
+}
+
+##
+# Parse command line and set global variables
+# Arguments:
+#   $@ command line
+# Globals:
+#   AWS_ACCESS_KEY_ID     string
+#   AWS_SECRET_ACCESS_KEY string
+#   AWS_REGION            string
+#   AWS_SECURITY_TOKEN    string
+#   RESOURCE_PATH         string
+#   VERBOSE               bool
+#   INSECURE              bool
+#   DEBUG                 bool
+##
+parseCommandLine() {
+  # Init globals
+  AWS_REGION=${AWS_DEFAULT_REGION:-""}
+  AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-""}
+  AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-""}
+  AWS_SECURITY_TOKEN=${AWS_SECURITY_TOKEN:-""}
+  VERBOSE=false
+  DEBUG=false
+  ENV_FILE=
+  OUTPUT_FILE=
+
+  # Parse options
+  local remaining=
+  local secretKeyFile=
+  while [[ $# > 0 ]]; do
+    local key="$1"
+    case ${key} in
+      --version)       showVersionAndExit;;
+      --debug)         DEBUG=true;;
+      -h|--help)       printUsageAndExitWith 0;;
+      -r|--region)     assertArgument $@; AWS_REGION=$2; shift;;
+      -e|--env)        ENV_FILE=$2; shift;;
+      -o|--output)     OUTPUT_FILE=$2; shift;;
+      -v|--verbose)    VERBOSE=true;;
+      -*)              err "Unknown option $1"
+                       printUsageAndExitWith ${INVALID_USAGE_EXIT_CODE};;
+      *)               remaining="${remaining} \"${key}\"";;
+    esac
+    shift
+  done
+
+  # Set the non-parameters back into the positional parameters ($1 $2 ..)
+  eval set -- ${remaining}
+
+  # Parse arguments
+  if [[ $# != 1 ]]; then
+    err "You need to specify the resource path to download e.g. /bucket/file.ext"
+    printUsageAndExitWith ${INVALID_USAGE_EXIT_CODE}
+  fi
+
+  assertResourcePath "$1"
+  RESOURCE_PATH="$1"
+
+  if [[ -z "${AWS_REGION}" ]]; then
+    err "AWS Region not specified"
+    printUsageAndExitWith ${INVALID_USAGE_EXIT_CODE}
+  fi
+  if [[ ! -z ${ENV_FILE} ]]; then
+    export $(cat $ENV_FILE | xargs)
+  fi
+  if [[ -z "${AWS_ACCESS_KEY_ID}" ]]; then
+    err "AWS Access Key ID not specified"
+    printUsageAndExitWith ${INVALID_USAGE_EXIT_CODE}
+  fi
+  if [[ -z "${AWS_SECRET_ACCESS_KEY}" ]]; then
+    err "AWS Secret Access Key not specified"
+    printUsageAndExitWith ${INVALID_USAGE_EXIT_CODE}
+  fi
+
+  # Freeze globals
+  readonly AWS_REGION
+  readonly AWS_ACCESS_KEY_ID
+  readonly AWS_SECRET_ACCESS_KEY
+  readonly RESOURCE_PATH
+  readonly DEBUG
+  readonly VERBOSE
+  readonly OUTPUT_FILE
+}
+
+##
+# Main routine
+##
+main() {
+  checkEnvironment
+  parseCommandLine $@
+  performRequest
+}
+
+main $@

@@ -1,0 +1,7 @@
+py_binary(
+    name = "package",
+    srcs = [
+        "package.py",
+    ],
+    visibility = [ "//visibility:public" ],
+)
