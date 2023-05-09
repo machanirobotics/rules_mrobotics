@@ -27,7 +27,7 @@ def main(
     output_file: Path,
     entrypoint: Optional[Path],
 ):
-    temp_path = Path(os.path.expanduser("~/.cache/rules_genesis/build"))
+    temp_path = Path(os.path.expanduser("~/.cache/rules_mr/build"))
     if temp_path.exists():
         shutil.rmtree(temp_path)
     

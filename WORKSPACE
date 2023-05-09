@@ -1,1 +1,1 @@
-workspace(name = "rules_genesis")
+workspace(name = "rules_mr")
