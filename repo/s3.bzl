@@ -154,6 +154,6 @@ filegroup(
 )
         """),
         "env": attr.label(allow_single_file = True, mandatory = True),
-        "tool": attr.label(executable = True, cfg = "exec", allow_single_file = True, default = "@rules_mr//repo/tools:s3-get"),
+        "tool": attr.label(executable = True, cfg = "exec", allow_single_file = True, default = "@rules_mr//repo/private:s3-get"),
     },
 )
