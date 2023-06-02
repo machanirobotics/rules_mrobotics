@@ -103,7 +103,7 @@ s3_archive = repository_rule(
         "build_file_contents": attr.string(),
         "strip_prefix": attr.string(),
         "env": attr.label(allow_single_file = True, mandatory = True),
-        "tool": attr.label(executable = True, cfg = "exec", allow_single_file = True, default = "@rules_mr//repo/private:s3-get"),
+        "tool": attr.label(executable = True, cfg = "exec", allow_single_file = True, default = "@rules_mrobotics//repo/private:s3-get"),
     },
 )
 
@@ -154,6 +154,6 @@ filegroup(
 )
         """),
         "env": attr.label(allow_single_file = True, mandatory = True),
-        "tool": attr.label(executable = True, cfg = "exec", allow_single_file = True, default = "@rules_mr//repo/private:s3-get"),
+        "tool": attr.label(executable = True, cfg = "exec", allow_single_file = True, default = "@rules_mrobotics//repo/private:s3-get"),
     },
 )
