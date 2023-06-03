@@ -28,9 +28,26 @@ http_archive(
     name = "rules_mrobotics",
     strip_prefix = "rules_mrobotics-master",
     urls = [
-        "github.com/machanirobotics/rules_mrobotics/archive/master.zip",
+        "https://github.com/machanirobotics/rules_mrobotics/archive/master.zip",
     ],
 )
+
+load("@rules_mrobotics//third_party:repositories.bzl", "load_repositories")
+
+load_repositories()
+
+load("@rules_mrobotics//third_party:toolchains.bzl", "load_toolchains")
+ 
+load_toolchains() 
+
+load("@rules_mrobotics//third_party:workspace0.bzl", "init_workspace0")
+
+init_workspace0()
+
+load("@rules_mrobotics//third_party:workspace1.bzl", "init_workspace1")
+
+init_workspace1()
+
 ```
 2. Look at the rules that you want to load with your project
 
