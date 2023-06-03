@@ -57,7 +57,7 @@ tonic_grpc_fixer = rule(
 )
 
 # buildifier: disable=function-docstring
-def tonic_grpc_library(name, protos, tonic, prost, prost_types = None, visibility = []):
+def tonic_grpc_library(name, protos, deps, visibility = []):
     name_pb = name + "_pb"
     name_fixed = name + "_fixed"
 
@@ -76,11 +76,6 @@ def tonic_grpc_library(name, protos, tonic, prost, prost_types = None, visibilit
         srcs = [
             name_fixed,
         ],
-        deps = [
-            tonic,
-            prost,
-        ] + [
-            prost_types,
-        ] if prost_types != None else [],
+        deps = deps,
         visibility = visibility,
     )

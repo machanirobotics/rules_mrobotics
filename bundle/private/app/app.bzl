@@ -1,5 +1,5 @@
 # buildifier: disable=module-docstring
-load(":ld_env.bzl", "LdEnvInfo")
+load("//bundle/private:ld_env.bzl", "LdEnvInfo")
 
 def _gen_bootstrap_script_impl(ctx):
     # getting python interpreter files, python import paths and the files of

@@ -2,7 +2,7 @@
 load("@rules_proto_grpc//python:python_grpc_compile.bzl", "python_grpc_compile")
 load("@rules_python//python:defs.bzl", "py_library")
 
-def python_grpc_library(name, protos, grpcio, visibility = None):
+def python_grpc_library(name, protos, deps, visibility = None):
     name_pb = name + "_pb"
     python_grpc_compile(
         name = name_pb,
@@ -14,8 +14,7 @@ def python_grpc_library(name, protos, grpcio, visibility = None):
         srcs = [name_pb],
         deps = [
             "@com_google_protobuf//:protobuf_python",
-            grpcio,
-        ],
+        ] + deps,
         imports = [name_pb],
         visibility = visibility,
     )

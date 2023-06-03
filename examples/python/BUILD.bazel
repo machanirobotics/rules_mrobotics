@@ -2,16 +2,20 @@ load("@rules_mrobotics//proto:defs.bzl", "python_grpc_library")
 
 python_grpc_library(
     name = "thing_python_grpc",
-    grpcio = "@rules_mrobotics_pip_grpcio//:pkg",
     protos = [
         "//proto:thing_proto",
+    ],
+    deps = [
+        "@rules_mrobotics_pip_grpcio//:pkg",
     ],
 )
 
 python_grpc_library(
     name = "greeter_python_grpc",
-    grpcio = "@rules_mrobotics_pip_grpcio//:pkg",
     protos = [
         "//proto:greeter_grpc",
+    ],
+    deps = [
+        "@rules_mrobotics_pip_grpcio//:pkg",
     ],
 )

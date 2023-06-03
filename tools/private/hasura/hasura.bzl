@@ -1,5 +1,5 @@
 # buildifier: disable=module-docstring
-load("//tools/private/hasura/runner.bzl", "create_runner")
+load("//tools/private/hasura:runner.bzl", "create_runner")
 
 def _create_migration_impl(ctx):
     runner = create_runner(ctx, "create_migrate", {
