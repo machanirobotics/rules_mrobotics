@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mRoboticsIO/rules_mrobotics.svg?branch=master)](https://travis-ci.org/mRoboticsIO/rules_mrobotics)
 
-`rules_mrobotics` is a set of [Bazel](https://bazel.build) build rules specifically designed for [mRobotics](https://mrobotics.io) projects.
+`rules_mrobotics` is a set of [Bazel](https://bazel.build) build rules specifically designed for [Machani Robotics](https://github.com/machanirobotics) projects.
 ## Overview
 
 
