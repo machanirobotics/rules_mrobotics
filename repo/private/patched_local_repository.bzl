@@ -1,4 +1,7 @@
-# buildifier: disable=module-docstring
+"""
+Local repository rule that supports patches
+"""
+
 def _patched_local_repository_impl(repository_ctx):
     archive = repository_ctx.attr.name + ".tar"
     reference = Label("@%s_unpatched//:WORKSPACE" % repository_ctx.attr.name)

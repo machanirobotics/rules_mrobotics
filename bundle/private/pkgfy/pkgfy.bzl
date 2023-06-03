@@ -1,29 +1,24 @@
-# buildifier: disable=module-docstring
-# buildifier: disable=overly-nested-depset
-# buildifier: disable=depset-union
+"""
+A packaging rule that creates a tar archive that contains the runfiles tree of 
+a target.
+"""
+
 def _pkgfy_impl(ctx):
-    files = depset()
-
-    # Collect all datafiles of all data
+    # collecting runfiles
+    runfiles_list = {}
     for dep in ctx.attr.data:
-        if hasattr(dep, "data_runfiles"):
-            files = depset(transitive = [files, dep.data_runfiles.files])
+        runfiles_list = runfiles_list | {f: True for f in dep.default_runfiles.files.to_list()}
 
-    # Collect all runfiles of all dependencies
     for dep in ctx.attr.srcs:
-        if hasattr(dep, "default_runfiles"):
-            files = depset(transitive = [files, dep.default_runfiles.files])
-    files = files.to_list()
+        runfiles_list = runfiles_list | {f: True for f in dep.default_runfiles.files.to_list()}
 
-    exc_files = depset()
+    exc_files = {}
     for dep in ctx.attr.excludes:
-        if hasattr(dep, "default_runfiles"):
-            exc_files = depset(transitive = [exc_files, dep.default_runfiles.files])
-    exc_files = exc_files.to_list()
+        exc_files = exc_files | {f: True for f in dep.default_runfiles.files.to_list()}
 
-    for f in exc_files.to_list():
-        if not f.is_source and f in files.to_list():
-            files.remove(f)
+    for f, _ in exc_files:
+        if not f.is_source and f in runfiles_list:
+            runfiles_list.pop(f)
 
     entrypoint = []
 
@@ -31,11 +26,11 @@ def _pkgfy_impl(ctx):
     if ctx.file.entrypoint:
         args += ["--entrypoint", ctx.file.entrypoint.path]
         entrypoint = [ctx.file.entrypoint]
-    args += ["--inputs"] + [f.path for f in files.to_list()]
+    args += ["--inputs"] + [f.path for f in runfiles_list.keys()]
 
     # Create the tar archive
     ctx.actions.run(
-        inputs = files + entrypoint,
+        inputs = runfiles_list.keys() + entrypoint,
         outputs = [ctx.outputs.out],
         executable = ctx.executable.packager,
         arguments = args,

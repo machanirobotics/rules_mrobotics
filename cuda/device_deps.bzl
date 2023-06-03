@@ -1,4 +1,8 @@
-# buildifier: disable=module-docstring
+"""
+Rule that makes it easy to create targets for various cuda libraries. The rule was 
+taken from Nvidia Isaac SDK, with a few minor tweaks
+"""
+
 CUDA_SO = [
     "cudart",
     "cufft",

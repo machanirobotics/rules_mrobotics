@@ -1,4 +1,7 @@
-# buildifier: disable=module-docstring
+"""
+Python grpc library rule that relies on the user to give the grpcio dependency
+"""
+
 load("@rules_proto_grpc//python:python_grpc_compile.bzl", "python_grpc_compile")
 load("@rules_python//python:defs.bzl", "py_library")
 

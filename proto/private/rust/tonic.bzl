@@ -1,4 +1,8 @@
-# buildifier: disable=module-docstring
+"""
+Rust grpc library rule that supports tonic. Implementation was mostly taken from:
+https://github.com/rules-proto-grpc/rules_proto_grpc/pull/202
+"""
+
 load("@rules_proto_grpc//:defs.bzl", "ProtoCompileInfo", "ProtoPluginInfo", "proto_compile_attrs", "proto_compile_impl")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 

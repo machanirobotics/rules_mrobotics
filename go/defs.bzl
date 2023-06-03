@@ -1,4 +1,7 @@
-# buildifier: disable=module-docstring
+"""
+Exports for go
+"""
+
 load("@io_bazel_rules_go//go:def.bzl", _go_binary = "go_binary", _go_library = "go_library")
 load("@bazel_gazelle//:deps.bzl", _go_repository = "go_repository")
 

@@ -1,4 +1,7 @@
-# buildifier: disable=module-docstring
+"""
+Rust ffi rule to generating c++ bindings
+"""
+
 load("@bazel_skylib//rules:run_binary.bzl", "run_binary")
 load("@rules_cc//cc:defs.bzl", "cc_library")
 

@@ -1,4 +1,7 @@
-# buildifier: disable=module-docstring
+"""
+Exports for proto
+"""
+
 load("@rules_proto//proto:defs.bzl", _proto_library = "proto_library")
 load("@io_bazel_rules_go//proto:def.bzl", _go_proto_library = "go_proto_library")
 load("//proto/private/rust:tonic.bzl", _rust_grpc_library = "tonic_grpc_library")

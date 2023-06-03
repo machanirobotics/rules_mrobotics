@@ -1,4 +1,8 @@
-# buildifier: disable=module-docstring
+"""
+Rules to run various hasura cli commands. Requires the hasura cli and get-graphql-schema to be 
+installed.
+"""
+
 load("//tools/private/hasura:runner.bzl", "create_runner")
 
 def _create_migration_impl(ctx):

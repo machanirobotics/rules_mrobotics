@@ -1,4 +1,8 @@
-# buildifier: disable=module-docstring
+"""
+A bootstrapping rule that sets LD_LIBRARY_PATH, PYTHONPATH among other
+things.
+"""
+
 load("//bundle/private:ld_env.bzl", "LdEnvInfo")
 
 def _gen_bootstrap_script_impl(ctx):
@@ -28,7 +32,10 @@ def _gen_bootstrap_script_impl(ctx):
                 ld_library_path = "%s:%s" % (ld_library_path, paths_as_str)
         ld_library_path_runfiles.append(target[DefaultInfo].default_runfiles)
 
+    # getting runfiles of the binary
     binary_files = ctx.attr.binary.default_runfiles.files.to_list()
+
+    # expanding the bootstrap template
     ctx.actions.expand_template(
         template = ctx.file._template,
         output = ctx.outputs.out,
