@@ -1,5 +1,8 @@
 workspace(name = "rules_mrobotics_examples")
 
+######################################################
+## loading rules_mrobotics
+
 local_repository(
     name = "rules_mrobotics",
     path = "..",
@@ -22,6 +25,7 @@ load("@rules_mrobotics//third_party:workspace1.bzl", "init_workspace1")
 init_workspace1()
 
 ######################################################
+## everything else required by the examples
 ## rust
 load("@rules_rust//crate_universe:defs.bzl", "crates_repository", "render_config")
 load("//third_party/cargo:deps.bzl", "cargo_info")
