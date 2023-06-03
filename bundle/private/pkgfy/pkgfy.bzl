@@ -1,3 +1,6 @@
+# buildifier: disable=module-docstring
+# buildifier: disable=overly-nested-depset
+# buildifier: disable=depset-union
 def _pkgfy_impl(ctx):
     files = depset()
 
@@ -18,8 +21,8 @@ def _pkgfy_impl(ctx):
             exc_files = depset(transitive = [exc_files, dep.default_runfiles.files])
     exc_files = exc_files.to_list()
 
-    for f in exc_files:
-        if not f.is_source and f in files:
+    for f in exc_files.to_list():
+        if not f.is_source and f in files.to_list():
             files.remove(f)
 
     entrypoint = []
@@ -28,7 +31,7 @@ def _pkgfy_impl(ctx):
     if ctx.file.entrypoint:
         args += ["--entrypoint", ctx.file.entrypoint.path]
         entrypoint = [ctx.file.entrypoint]
-    args += ["--inputs"] + [f.path for f in files]
+    args += ["--inputs"] + [f.path for f in files.to_list()]
 
     # Create the tar archive
     ctx.actions.run(
@@ -50,7 +53,7 @@ pkgfy = rule(
         "extension": attr.string(default = "tar"),
         "entrypoint": attr.label(allow_single_file = True),
         "excludes": attr.label_list(allow_files = True),
-        "packager": attr.label(executable = True, cfg = "exec", default = Label("//bundle/private:package")),
+        "packager": attr.label(executable = True, cfg = "exec", default = Label("//bundle/private/pkgfy:package")),
     },
     outputs = {
         "out": "%{name}.%{extension}",

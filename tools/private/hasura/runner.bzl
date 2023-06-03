@@ -1,4 +1,5 @@
 # buildifier: disable=module-docstring
+# buildifier: disable=function-docstring
 def create_runner(ctx, command, substitutions):
     template = ctx.file._template
     out_name = "%s_runner.sh" % command
