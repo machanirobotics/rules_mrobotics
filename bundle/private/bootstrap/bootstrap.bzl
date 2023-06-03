@@ -40,7 +40,7 @@ def _gen_bootstrap_script_impl(ctx):
         template = ctx.file._template,
         output = ctx.outputs.out,
         substitutions = {
-            "@PYTHON_INTERPRETER_PATH@": py_toolchain.py3_runtime.interpreter.path,
+            "@PYTHON_INTERPRETER_PATH@": py_toolchain.py3_runtime.interpreter.path if len(py_libraries_files) != 0 else "",
             "@PYTHONPATH@": ":".join(py_import_paths),
             "@APP@": ctx.executable.binary.path.removeprefix(ctx.bin_dir.path).lstrip("/"),
             "@LD_LIBRARY_PATH@": ld_library_path,

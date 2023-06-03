@@ -1,16 +1,9 @@
 load("@rules_mrobotics//cc:defs.bzl", "cc_binary")
-load("@rules_mrobotics//bundle:defs.bzl", "pkgfy")
 
 cc_binary(
     name = "cc",
     srcs = [
         "main.cc",
     ],
-)
-
-pkgfy(
-    name = "cc_tar",
-    srcs = [
-        ":cc",
-    ],
+    visibility = ["//visibility:public"],
 )
