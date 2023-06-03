@@ -9,9 +9,9 @@ tonic_grpc_compile = rule(
         _plugins = attr.label_list(
             providers = [ProtoPluginInfo],
             default = [
-                Label("//rust/proto/private:rust_prost_plugin"),
-                Label("//rust/proto/private:rust_tonic_plugin"),
-                Label("//rust/proto/private:rust_crate_plugin"),
+                Label("//proto/private/rust:rust_prost_plugin"),
+                Label("//proto/private/rust:rust_tonic_plugin"),
+                Label("//proto/private/rust:rust_crate_plugin"),
             ],
             doc = "List of protoc plugins to apply",
         ),
@@ -33,7 +33,7 @@ def _tonic_grpc_fixer_impl(ctx):
     )
 
     # creating lib.rs
-    lib_rs = ctx.actions.declare_file("%s_lib.rs" % fixed_dir_name)
+    lib_rs = ctx.actions.declare_file("lib.rs")
     ctx.actions.write(
         lib_rs,
         'include!("%s/mod.rs");' % fixed_dir_name,
@@ -51,13 +51,13 @@ tonic_grpc_fixer = rule(
         "_fixer": attr.label(
             executable = True,
             cfg = "exec",
-            default = Label("//rust/proto/private:rust_fixer"),
+            default = Label("//proto/private/rust:rust_fixer"),
         ),
     },
 )
 
 # buildifier: disable=function-docstring
-def tonic_grpc_library(name, protos, tonic, prost, visibility = []):
+def tonic_grpc_library(name, protos, tonic, prost, prost_types = None, visibility = []):
     name_pb = name + "_pb"
     name_fixed = name + "_fixed"
 
@@ -79,6 +79,8 @@ def tonic_grpc_library(name, protos, tonic, prost, visibility = []):
         deps = [
             tonic,
             prost,
-        ],
+        ] + [
+            prost_types,
+        ] if prost_types != None else [],
         visibility = visibility,
     )

@@ -1,0 +1,22 @@
+--- crate_universe/3rdparty/BUILD.libgit2.bazel
++++ crate_universe/3rdparty/BUILD.libgit2.bazel
+@@ -111,7 +111,10 @@
+     copts = select({
+         # Required in `opt` builds to solve the following error
+         # libhttp-parser.a(http_parser.o): requires unsupported dynamic reloc 11; recompile with -fPIC
+-        "@platforms//os:linux": ["-fPIC"],
++        "@platforms//os:linux": [
++            "-fPIC",
++            "-Wno-unused-but-set-variable",
++        ],
+         "//conditions:default": [],
+     }),
+     defines = [
+@@ -252,6 +255,7 @@
+             "-fPIC",
+             "-Wall",
+             "-std=gnu90",
++            "-Wno-unused-but-set-parameter",
+             # On linux, optimization is required to avoid issues with missing (and unused) symbols:
+             # `liblibgit2.a(pack.pic.o):pack.c:function packfile_open_locked: error: undefined reference to 'fstat'`
+             #

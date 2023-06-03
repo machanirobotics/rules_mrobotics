@@ -7,7 +7,7 @@ proto_plugin(
     ],
     options = ["file_descriptor_set"],
     output_directory = True,
-    tool = "@rules_mrobotics_crate_index//:protoc-gen-prost-0.2.1__protoc-gen-prost",
+    tool = "//third_party/cargo/crates:protoc-gen-prost-0.2.1__protoc-gen-prost",
     visibility = ["//visibility:public"],
 )
 
@@ -18,7 +18,7 @@ proto_plugin(
     ],
     options = ["no_include"],
     output_directory = True,
-    tool = "@rules_mrobotics_crate_index//:protoc-gen-tonic__protoc-gen-tonic",
+    tool = "//third_party/cargo/crates:protoc-gen-tonic__protoc-gen-tonic",
     visibility = ["//visibility:public"],
 )
 
@@ -29,7 +29,7 @@ proto_plugin(
     ],
     options = ["no_features"],
     output_directory = True,
-    tool = "@rules_mrobotics_crate_index//:protoc-gen-prost-crate__protoc-gen-prost-crate",
+    tool = "//third_party/cargo/crates:protoc-gen-prost-crate__protoc-gen-prost-crate",
     visibility = ["//visibility:public"],
 )
 

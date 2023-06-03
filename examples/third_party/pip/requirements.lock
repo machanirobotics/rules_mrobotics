@@ -51,4 +51,4 @@ grpcio==1.54.2 \
     --hash=sha256:f8da84bbc61a4e92af54dc96344f328e5822d574f767e9b08e1602bb5ddc254a \
     --hash=sha256:f900ed4ad7a0f1f05d35f955e0943944d5a75f607a836958c6b8ab2a81730ef2 \
     --hash=sha256:fd6c6c29717724acf9fc1847c4515d57e4dc12762452457b9cb37461f30a81bb
-    # via -r repositories/pip/requirements.in
+    # via -r third_party/pip/requirements.in

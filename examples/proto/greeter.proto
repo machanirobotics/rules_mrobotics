@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-option go_package = "github.com/machanirobotics/rules_mrobotics/examples/proto";
+option go_package = "github.com/machanirobotics/rules_mrobotics_examples/proto";
 
 package greeter;
 
 import "google/protobuf/any.proto";
-import "examples/proto/thing.proto";
+import "proto/thing.proto";
 
 // The greeting service definition.
 service Greeter {

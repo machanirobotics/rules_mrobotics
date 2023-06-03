@@ -11,7 +11,7 @@ def load_repositories():
             "https://github.com/protocolbuffers/protobuf/archive/v21.10.tar.gz",  # match version with rules_proto_grpc/respositories.bzl
         ],
         patches = [
-            "//third_party/patches:com_google_protobuf.patch",
+            "@rules_mrobotics//third_party/patches:com_google_protobuf.patch",
         ],
         strip_prefix = "protobuf-21.10",
     )
@@ -37,6 +37,9 @@ def load_repositories():
         name = "rules_rust",
         sha256 = "50272c39f20a3a3507cb56dcb5c3b348bda697a7d868708449e2fa6fb893444c",
         urls = ["https://github.com/bazelbuild/rules_rust/releases/download/0.22.0/rules_rust-v0.22.0.tar.gz"],
+        patches = [
+            "@rules_mrobotics//third_party/patches:rules_rust.patch",
+        ],
     )
 
     http_archive(

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/machanirobotics/rules_mrobotics/examples/proto";
+option go_package = "github.com/machanirobotics/rules_mrobotics_examples/proto";
 
 package example.proto;
 

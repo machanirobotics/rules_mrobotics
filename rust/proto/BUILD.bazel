@@ -1,4 +1,0 @@
-alias(
-    name = "toolchain_type",
-    actual = "@rules_rust//proto:toolchain_type",
-)

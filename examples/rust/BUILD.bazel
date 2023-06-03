@@ -1,19 +1,12 @@
-load("@rules_mrobotics//rust:defs.bzl", "rust_grpc_library")
-
-rust_grpc_library(
-    name = "thing_rust_grpc",
-    prost = "@rules_mrobotics_examples_crate_index//:prost",
-    protos = [
-        "//examples/proto:thing_proto",
-    ],
-    tonic = "@rules_mrobotics_examples_crate_index//:tonic",
-)
+load("@rules_mrobotics//proto:defs.bzl", "rust_grpc_library")
 
 rust_grpc_library(
     name = "greeter_rust_grpc",
     prost = "@rules_mrobotics_examples_crate_index//:prost",
+    prost_types = "@rules_mrobotics_examples_crate_index//:prost-types",
     protos = [
-        "//examples/proto:greeter_grpc",
+        "//proto:greeter_grpc",
+        "//proto:thing_proto",
     ],
     tonic = "@rules_mrobotics_examples_crate_index//:tonic",
 )

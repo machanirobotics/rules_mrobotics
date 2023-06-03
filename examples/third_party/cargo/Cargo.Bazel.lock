@@ -1,5 +1,5 @@
 {
-  "checksum": "237df5fa7b535305bebd95b8d76bed32de9a95ce648c6c38c10bc5417b9b3987",
+  "checksum": "8b02b576dd2fed48bd64dd2df324500b7c10ed35de736f7610edac5bcc0dce56",
   "crates": {
     "anyhow 1.0.71": {
       "name": "anyhow",
@@ -563,6 +563,10 @@
             {
               "id": "prost 0.11.9",
               "target": "prost"
+            },
+            {
+              "id": "prost-types 0.11.9",
+              "target": "prost_types"
             },
             {
               "id": "tonic 0.9.2",
@@ -2340,6 +2344,52 @@
             {
               "id": "syn 1.0.109",
               "target": "syn"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2021",
+        "version": "0.11.9"
+      },
+      "license": "Apache-2.0"
+    },
+    "prost-types 0.11.9": {
+      "name": "prost-types",
+      "version": "0.11.9",
+      "repository": {
+        "Http": {
+          "url": "https://crates.io/api/v1/crates/prost-types/0.11.9/download",
+          "sha256": "213622a1460818959ac1181aaeb2dc9c7f63df720db7d788b3e24eacd1983e13"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "prost_types",
+            "crate_root": "src/lib.rs",
+            "srcs": [
+              "**/*.rs"
+            ]
+          }
+        }
+      ],
+      "library_target_name": "prost_types",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "default",
+            "std"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "prost 0.11.9",
+              "target": "prost"
             }
           ],
           "selects": {}

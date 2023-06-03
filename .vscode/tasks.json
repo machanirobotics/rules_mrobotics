@@ -10,8 +10,8 @@
             },
             "command": "bazel",
             "args": [
-                "sync",
-                "--only=@rules_mrobotics_crate_index"
+                "run",
+                "//third_party/cargo:rules_mrobotics_crates"
             ],
             "options": {
                 "cwd": "${workspaceFolder}",
@@ -38,7 +38,7 @@
                 "--only=@rules_mrobotics_examples_crate_index"
             ],
             "options": {
-                "cwd": "${workspaceFolder}",
+                "cwd": "${workspaceFolder}/examples",
                 "env": {
                     "REPIN": "1"
                 }
@@ -50,8 +50,8 @@
             }
         },
         {
-            "label": "Python Dependencies (amd64) - Bazel",
-            "detail": "Updates Python Dependencies using pip3 only AMD64",
+            "label": "Python Dependencies for examples - Bazel",
+            "detail": "Updates Python Dependencies for examples",
             "icon": {
                 "color": "terminal.ansiGreen",
                 "id": "sync"
@@ -62,7 +62,7 @@
                 "//third_party/pip:requirements.update"
             ],
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}/examples"
             },
             "group": "build",
             "presentation": {
