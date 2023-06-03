@@ -1,0 +1,25 @@
+--- BUILD.bazel 
++++ BUILD.bazel
+@@ -65,7 +65,9 @@
+         "src/google/protobuf/**/*.h",
+         "src/google/protobuf/**/*.inc",
+     ]),
+-    copts = COPTS,
++    copts = COPTS + [
++        "-Wno-unused-function"
++    ],
+     includes = ["src/"],
+     linkopts = LINK_OPTS,
+     visibility = ["//visibility:public"],
+@@ -447,7 +449,9 @@
+         "src/google/protobuf/compiler/subprocess.cc",
+         "src/google/protobuf/compiler/zip_writer.cc",
+     ],
+-    copts = COPTS,
++    copts = COPTS + [
++        "-Wno-unused-function",
++    ],
+     includes = ["src/"],
+     linkopts = LINK_OPTS,
+     visibility = ["//visibility:public"],
+ 

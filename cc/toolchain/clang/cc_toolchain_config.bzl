@@ -1235,6 +1235,7 @@ def _impl(ctx):
 
     treat_warnings_as_errors_feature = feature(
         name = "treat_warnings_as_errors",
+        enabled = True,
         flag_sets = [
             flag_set(
                 actions = [ACTION_NAMES.c_compile, ACTION_NAMES.cpp_compile],

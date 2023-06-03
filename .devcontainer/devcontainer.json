@@ -1,0 +1,31 @@
+{
+    "name": "rules-mrobotics",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "mounts": [
+        {
+            "source": "/etc/localtime",
+            "target": "/etc/localtime",
+            "type": "bind"
+        }
+    ],
+    "privileged": true,
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "BazelBuild.vscode-bazel",
+                "eamodio.gitlens",
+                "zxh404.vscode-proto3",
+                "rust-lang.rust-analyzer",
+                "bungcip.better-toml",
+                "ms-python.python",
+                "golang.go",
+                "ms-python.isort",
+                "ms-python.vscode-pylance",
+                "devondcarew.bazel-code",
+                "StackBuild.bazel-stack-vscode"
+            ]
+        }
+    }
+}

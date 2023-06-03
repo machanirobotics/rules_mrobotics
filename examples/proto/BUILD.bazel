@@ -1,0 +1,24 @@
+load("@rules_mrobotics//proto:defs.bzl", "proto_library")
+
+package(default_visibility = ["//visibility:public"])
+
+proto_library(
+    name = "thing_proto",
+    srcs = [
+        "thing.proto",
+    ],
+    deps = [
+        "@com_google_protobuf//:any_proto",
+    ],
+)
+
+proto_library(
+    name = "greeter_grpc",
+    srcs = [
+        "greeter.proto",
+    ],
+    deps = [
+        ":thing_proto",
+        "@com_google_protobuf//:any_proto",
+    ],
+)

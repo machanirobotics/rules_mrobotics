@@ -50,7 +50,7 @@ pkgfy = rule(
         "extension": attr.string(default = "tar"),
         "entrypoint": attr.label(allow_single_file = True),
         "excludes": attr.label_list(allow_files = True),
-        "packager": attr.label(executable = True, cfg = "exec", default = Label("@rules_mrobotics//pkg/private:package")),
+        "packager": attr.label(executable = True, cfg = "exec", default = Label("//bundle/private:package")),
     },
     outputs = {
         "out": "%{name}.%{extension}",

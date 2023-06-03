@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "github.com/machanirobotics/rules_mrobotics/examples/proto";
+
+package greeter;
+
+import "google/protobuf/any.proto";
+import "examples/proto/thing.proto";
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello(HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest { string name = 1; }
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+  google.protobuf.Any payload = 2;
+  example.proto.Thing thing = 3;
+}

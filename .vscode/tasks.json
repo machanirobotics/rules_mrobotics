@@ -1,0 +1,74 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Cargo Dependencies - Bazel",
+            "detail": "Updates Cargo Dependencies",
+            "icon": {
+                "color": "terminal.ansiGreen",
+                "id": "sync"
+            },
+            "command": "bazel",
+            "args": [
+                "sync",
+                "--only=@rules_mrobotics_crate_index"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "REPIN": "1"
+                }
+            },
+            "group": "build",
+            "presentation": {
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Cargo Dependencies for examples - Bazel",
+            "detail": "Updates Cargo Dependencies for examples",
+            "icon": {
+                "color": "terminal.ansiGreen",
+                "id": "sync"
+            },
+            "command": "bazel",
+            "args": [
+                "sync",
+                "--only=@rules_mrobotics_examples_crate_index"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "REPIN": "1"
+                }
+            },
+            "group": "build",
+            "presentation": {
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Python Dependencies (amd64) - Bazel",
+            "detail": "Updates Python Dependencies using pip3 only AMD64",
+            "icon": {
+                "color": "terminal.ansiGreen",
+                "id": "sync"
+            },
+            "command": "bazel",
+            "args": [
+                "run",
+                "//third_party/pip:requirements.update"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "presentation": {
+                "panel": "dedicated",
+                "clear": true
+            }
+        }
+    ]
+}

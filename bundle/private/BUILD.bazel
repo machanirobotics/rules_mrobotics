@@ -1,3 +1,8 @@
+exports_files([
+    "bootstrap.tpl",
+])
+
+
 py_binary(
     name = "package",
     srcs = [

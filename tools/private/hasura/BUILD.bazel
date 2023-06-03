@@ -1,0 +1,1 @@
+exports_files(["hasura_runner_template.sh"])

@@ -1,0 +1,8 @@
+load("@rules_mrobotics//cc:defs.bzl", "cc_binary")
+
+cc_binary(
+    name = "cc",
+    srcs = [
+        "main.cc"
+    ]
+)

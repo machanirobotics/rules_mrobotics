@@ -54,7 +54,7 @@ _gen_bootstrap_script = rule(
         "py_libraries": attr.label_list(default = []),
         "ld_env": attr.label_list(default = [], providers = [DefaultInfo, LdEnvInfo]),
         "out": attr.output(mandatory = True),
-        "_template": attr.label(allow_single_file = True, default = "//bazel/lib/app:bootstrap.tpl"),
+        "_template": attr.label(allow_single_file = True, default = "//bundle/private:bootstrap.tpl"),
     },
     toolchains = [
         "@bazel_tools//tools/python:toolchain_type",
