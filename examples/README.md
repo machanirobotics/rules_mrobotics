@@ -76,7 +76,7 @@ cd rules_mrobotics/examples
     ```bash
     bazel build //examples/bundle:cc_tar
     ```
-+ Bootstap binary for the application with `PATH`, `PYTHONHOME`, `PYTHONPATH` and `LD_LIBRARY_PATH`  
++ Bootstap binary for the application with `PATH`, `PYTHONHOME`, `PYTHONPATH` and `LD_LIBRARY_PATH` set
 
     ```bash
     bazel build //examples/bundle:cc_bootstrap
