@@ -55,14 +55,49 @@ If you are facing any issues, look at the examples folder for the rules. [Exampl
 
 ## Rules 
 
-> TODO Documentation 
-
+* [rules_cc](cc)
+  * cc_library
+  * cc_binary
+  * cc_import
+* [rules_rust](rust)
+  * rust_library
+  * rust_binary
+  * rust_cc_bridge
+* [rules_python](python)
+  * py_library 
+  * py_binary
+  * py_test
+* [rules_proto](proto)
+  * proto_library
+  * rust_grpc_library
+  * go_proto_library
+  * python_grpc_library
+* [rules_go](go)
+  * go_library
+  * go_binary
+  * go_test
+  * go_repository
+* [rules_bundle](bundle)
+  * bootstrapped_binary
+  * pkgfy
+  * ld_env
+* [rules_repo](repo)
+  * s3_file
+  * s3_archive
+  * patched_local_repository
+* [rules_tools](tools)
+  * Hasura
+    * hasura_create_migration
+    * hasura_apply_migration
+    * hasura_export_schema
+    * hasura_run_console
+  
 
 ## Releases
 
-| Version | Release Date | Changelog |
-|---------|--------------|-----------|
-| v1.0.0  | 2023-06-DD  | [Changelog](https://github.com/machanirobotics/rules_mrobotics/releases/tag/v1.0.0) |
+| Version | Release Date | Changelog                                                                           |
+| ------- | ------------ | ----------------------------------------------------------------------------------- |
+| v1.0.0  | 2023-06-DD   | [Changelog](https://github.com/machanirobotics/rules_mrobotics/releases/tag/v1.0.0) |
 
 ## License
 
