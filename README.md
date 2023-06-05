@@ -22,10 +22,9 @@ To use `rules_mrobotics`, follow these steps:
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
-    name = "rules_mrobotics",
-    strip_prefix = "rules_mrobotics-master",
+    name = "rules_mrobotics", 
     urls = [
-        "https://github.com/machanirobotics/rules_mrobotics/archive/master.zip",
+        "https://github.com/machanirobotics/rules_mrobotics/archive/refs/tags/v1.0.0.zip",
     ],
 )
 
