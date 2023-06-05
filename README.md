@@ -86,7 +86,7 @@ If you are facing any issues, look at the examples folder for the rules. [Exampl
   * s3_archive
   * patched_local_repository
 * [rules_tools](tools)
-  * Hasura
+  * hasura
     * hasura_create_migration
     * hasura_apply_migration
     * hasura_export_schema
