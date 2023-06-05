@@ -1,4 +1,6 @@
-load("@rules_mrobotics//proto:defs.bzl", "proto_library")
+load("@rules_mrobotics//proto:defs.bzl", "proto_library","rust_grpc_library","go_proto_library","python_grpc_library")
+load("@rules_mrobotics//go:defs.bzl","go_library")
+
 
 package(default_visibility = ["//visibility:public"])
 
@@ -20,5 +22,53 @@ proto_library(
     deps = [
         ":thing_proto",
         "@com_google_protobuf//:any_proto",
+    ],
+)
+
+go_proto_library(
+    name = "proto_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "github.com/machanirobotics/rules_mrobotics_examples/proto",
+    proto = ":greeter_grpc",
+    deps = ["//proto:thing_proto"],
+)
+
+go_library(
+    name = "proto",
+    embed = [":proto_go_proto"],
+    importpath = "github.com/machanirobotics/rules_mrobotics_examples/proto",
+)
+
+rust_grpc_library(
+    name = "greeter_rust_grpc",
+    protos = [
+        "//proto:greeter_grpc",
+        "//proto:thing_proto",
+    ],
+    deps = [
+        "@rules_mrobotics_examples_crate_index//:prost",
+        "@rules_mrobotics_examples_crate_index//:prost-types",
+        "@rules_mrobotics_examples_crate_index//:tonic",
+    ],
+)
+
+
+python_grpc_library(
+    name = "thing_python_grpc",
+    protos = [
+        "thing_proto",
+    ],
+    deps = [
+        "@rules_mrobotics_pip_grpcio//:pkg",
+    ],
+)
+
+python_grpc_library(
+    name = "greeter_python_grpc",
+    protos = [
+        "greeter_grpc",
+    ],
+    deps = [
+        "@rules_mrobotics_pip_grpcio//:pkg",
     ],
 )

@@ -1,0 +1,8 @@
+[package]
+name = "example"
+version = "0.1.0"
+authors = ["Srikanth K <srikanthkandarpa@machanirobotics.com>"]
+edition = "2021"
+
+[dependencies]
+rocket = "0.4.11"

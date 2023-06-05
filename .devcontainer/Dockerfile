@@ -18,19 +18,7 @@ RUN apt update && \
     gpg-agent \
     ca-certificates
 
-# adding arm64 architecture (for cross compiling from x86_64 to aarch64) to apt and updating sources list
-RUN if [ "$(arch)" = "x86_64" ]; then \
-    dpkg --add-architecture arm64 && \
-    sed -i 's/^deb\(.*$\)/deb [arch=amd64,i386]\1'/ /etc/apt/sources.list && \
-    echo "deb [arch=arm64] http://ports.ubuntu.com/ focal main restricted\n"\
-    "deb [arch=arm64] http://ports.ubuntu.com/ focal-updates main restricted\n"\
-    "deb [arch=arm64] http://ports.ubuntu.com/ focal universe\n"\
-    "deb [arch=arm64] http://ports.ubuntu.com/ focal-updates universe\n"\
-    "deb [arch=arm64] http://ports.ubuntu.com/ focal multiverse\n"\
-    "deb [arch=arm64] http://ports.ubuntu.com/ focal-updates multiverse\n"\
-    "deb [arch=arm64] http://ports.ubuntu.com/ focal-backports main restricted universe multiverse\n"\
-    > /etc/apt/sources.list.d/arm-cross-compile-sources.list; \
-    fi
+
 
 # adding llvm sources list
 RUN echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal main\n" \
