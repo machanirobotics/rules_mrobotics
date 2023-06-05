@@ -23,10 +23,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_mrobotics",
-    sha256 = "19c4aacca31f59f16c647372b535bda7b317bf4e63ce6b12ebf35c254fba6a37",
-    strip_prefix = "rules_mrobotics-1.0.0",
+    strip_prefix = "rules_mrobotics-master",
     urls = [
-        "https://github.com/machanirobotics/rules_mrobotics/archive/v1.0.0.zip",
+        "https://github.com/machanirobotics/rules_mrobotics/archive/master.zip",
     ],
 )
 
