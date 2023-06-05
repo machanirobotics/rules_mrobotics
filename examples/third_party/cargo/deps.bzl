@@ -12,5 +12,8 @@ cargo_info = struct(
         "prost-types": crate.spec(
             version = "0.11.6",
         ),
+        "rocket": crate.spec(
+            version = "0.5.0-rc.3",
+        ),
     },
 )

@@ -1,0 +1,12 @@
+load("@rules_rust//rust:defs.bzl", "rust_binary")
+
+
+rust_binary(
+    name = "rocket_example",
+    srcs = [
+        "main.rs",
+    ],
+    deps = [
+        "@rules_mrobotics_examples_crate_index//:rocket",
+    ],
+)

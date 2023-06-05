@@ -1,0 +1,10 @@
+load("@rules_mrobotics//python:defs.bzl", "py_binary")
+
+py_binary(
+    name = "hello_world",
+    srcs = ["__main__.py"],
+    main = "__main__.py",
+    deps = [
+        "//python/internal:example_lib",
+    ],
+)

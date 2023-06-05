@@ -1,7 +1,7 @@
-# build --incompatible_enable_cc_toolchain_resolution
-# build --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+build --incompatible_enable_cc_toolchain_resolution
+build --action_env BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
 build --spawn_strategy=worker,processwrapper-sandbox
 
-# build:aarch64 --platforms=//platforms:aarch64
+build:aarch64 --platforms=//platforms:aarch64
 
 test --test_output=all --keep_going --color=yes

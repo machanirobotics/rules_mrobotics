@@ -1,15 +1,14 @@
-class TestRouter:
-    def __init__(self) -> None:
-        pass
+from fastapi import FastAPI, APIRouter
 
-    def router_instance(self):
-        pass
+app = FastAPI(title="Recipe API", openapi_url="/openapi.json")
 
-    def router_routers(self):
-        pass
+api_router = APIRouter()
 
-    def router_controllers(self):
-        pass
+@api_router.get("/", status_code=200)
+def root() -> dict:
+    """
+    Root Get
+    """
+    return {"msg": "Hello, World!"}
 
-    def router_app():
-        pass
+app.include_router(api_router)
