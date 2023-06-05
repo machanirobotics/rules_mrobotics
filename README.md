@@ -95,6 +95,8 @@ If you are facing any issues, look at the examples folder for the rules. [Exampl
 | Version | Release Date | Changelog                                                                           |
 | ------- | ------------ | ----------------------------------------------------------------------------------- |
 | v1.0.0  | 2023-06-05   | [Changelog](https://github.com/machanirobotics/rules_mrobotics/releases/tag/v1.0.0) |
+| v1.0.1  | 2023-06-05   | [Changelog](https://github.com/machanirobotics/rules_mrobotics/releases/tag/v1.0.1) |
+
 
 ## License
 
