@@ -24,7 +24,7 @@ cd rules_mrobotics/examples
  
 ## CC 
 
-> This example supports c++17 with cross compilation for amd64 and aarch64 with clang17
+> This example supports c++14 with cross compilation for amd64 and aarch64 with clang17
 
 + Run the application with bazel
     ```bash
