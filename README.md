@@ -5,16 +5,13 @@
 `rules_mrobotics` is a set of [Bazel](https://bazel.build) build rules specifically designed for [Machani Robotics](https://github.com/machanirobotics) projects.
 ## Overview
 
-
-
 - [rules\_mrobotics](#rules_mrobotics)
   - [Overview](#overview)
   - [Setup](#setup)
   - [Rules](#rules)
   - [Releases](#releases)
   - [License](#license)
-
-
+  
 ## Setup
 
 To use `rules_mrobotics`, follow these steps:
@@ -56,41 +53,41 @@ If you are facing any issues, look at the examples folder for the rules. [Exampl
 ## Rules 
 
 * [rules_cc](cc)
-  * cc_library
-  * cc_binary
-  * cc_import
+  - cc_library: Creates a C++ library target.
+  - cc_binary: Creates a C++ binary target.
+  - cc_import: Imports a C++ library as a target.
 * [rules_rust](rust)
-  * rust_library
-  * rust_binary
-  * rust_cc_bridge
+  - rust_library: Creates a Rust library target.
+  - rust_binary: Creates a Rust binary target.
+  - rust_cc_bridge: Bridges between C++ and Rust.
 * [rules_python](python)
-  * py_library 
-  * py_binary
-  * py_test
+  - py_library: Creates a Python library target.
+  - py_binary: Creates a Python binary target.
+  - py_test: Creates a Python test target.
 * [rules_proto](proto)
-  * proto_library
-  * rust_grpc_library
-  * go_proto_library
-  * python_grpc_library
+  - proto_library: Generates protobuf code for the specified protocol buffer files.
+  - rust_grpc_library: Generates Rust code for gRPC services.
+  - go_proto_library: Generates Go code for protocol buffers.
+  - python_grpc_library: Generates Python code for gRPC services.
 * [rules_go](go)
-  * go_library
-  * go_binary
-  * go_test
-  * go_repository
+  - go_library: Creates a Go library target.
+  - go_binary: Creates a Go binary target.
+  - go_test: Creates a Go test target.
+  - go_repository: Imports an external Go package as a target.
 * [rules_bundle](bundle)
-  * bootstrapped_binary
-  * pkgfy
-  * ld_env
+  - bootstrapped_binary: Creates a binary that can bootstrap itself.
+  - pkgfy: Packages files into a tarball or zip archive.
+  - ld_env: Sets linker flags based on environment variables.
 * [rules_repo](repo)
-  * s3_file
-  * s3_archive
-  * patched_local_repository
+  - s3_file: Downloads a file from an S3 bucket.
+  - s3_archive: Downloads and extracts a tarball or zip archive from an S3 bucket.
+  - patched_local_repository: Specifies a local repository with patches applied.
 * [rules_tools](tools)
-  * hasura
-    * hasura_create_migration
-    * hasura_apply_migration
-    * hasura_export_schema
-    * hasura_run_console
+  - hasura: CLI tool for managing Hasura projects.
+  - hasura_create_migration: Creates a new migration for a Hasura project.
+  - hasura_apply_migration: Applies migrations to a Hasura project.
+  - hasura_export_schema: Exports the GraphQL schema from a Hasura project.
+  - hasura_run_console: Starts a local Hasura GraphQL console.
   
 
 ## Releases
