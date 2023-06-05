@@ -6,7 +6,7 @@ installed.
 load("//tools/private/hasura:runner.bzl", "create_runner")
 
 def _create_migration_impl(ctx):
-    runner = create_runner(ctx, "create_migrate", {
+    runner = create_runner(ctx, "create_migration", {
         "@SCHEMAS@": ",".join(ctx.attr.schemas),
         "@DATABASE@": ctx.attr.database,
     })
