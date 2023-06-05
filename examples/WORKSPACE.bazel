@@ -8,7 +8,7 @@ local_repository(
     path = "..",
 )
 
-load("@rules_mrobotics//third_party:repositories.bzl", "load_repositories", go_load_repositories="load_repositories")
+load("@rules_mrobotics//third_party:repositories.bzl", "load_repositories", go_load_repositories = "load_repositories")
 
 load_repositories()
 
@@ -61,11 +61,14 @@ load("@rules_mrobotics_pip//:requirements.bzl", install_py_deps = "install_deps"
 
 install_py_deps()
 
+register_toolchains("//third_party:python_proto_toolchain", "//third_party:rust_proto_toolchain")
+
 ######################################################
 ## go
 
 load("//third_party:go/deps.bzl", "go_repositories")
 
 go_load_repositories()
+
 # gazelle:repository_macro third_party/go/deps.bzl%go_repositories
 go_repositories()

@@ -8,15 +8,15 @@ py_library(
         ],
         allow_empty = False,
     ),
+    visibility = ["//visibility:public"],
     deps = select({
         "@rules_mrobotics//platforms:is_x86_64": [
+            "@rules_mrobotics_pip_fastapi//:pkg",
             "@rules_mrobotics_pip_uvicorn//:pkg",
-            "@rules_mrobotics_pip_fastapi//:pkg"
         ],
         "@rules_mrobotics//platforms:is_aarch64": [
+            "@rules_mrobotics_pip_fastapi//:pkg",
             "@rules_mrobotics_pip_uvicorn//:pkg",
-            "@rules_mrobotics_pip_fastapi//:pkg"
         ],
     }),
-    visibility = ["//visibility:public"],
 )
