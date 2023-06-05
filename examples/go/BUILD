@@ -22,7 +22,7 @@ go_library(
 )
 
 go_binary(
-    name = "hello-world",
+    name = "hello_world",
     embed = [":bazeltest_lib"],
     visibility = ["//visibility:public"],
 )

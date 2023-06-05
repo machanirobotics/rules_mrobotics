@@ -1,7 +1,7 @@
 load("@rules_mrobotics//cc:defs.bzl", "cc_binary")
 
 cc_binary(
-    name = "cc",
+    name = "hello_world",
     srcs = [
         "main.cc",
     ],
