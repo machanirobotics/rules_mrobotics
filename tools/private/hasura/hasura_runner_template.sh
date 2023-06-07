@@ -21,6 +21,7 @@ case "$COMMAND" in
         hasura metadata apply --skip-update-check
         hasura migrate apply --database-name @DATABASE@ --skip-update-check
         hasura metadata reload --skip-update-check
+        find seeds -type f -iname "*.sql" -exec sh -c 'hasura seed apply --file `basename "$1"` --database-name @DATABASE@' sh {} \;
         ;;
     "console")
         hasura console --skip-update-check
