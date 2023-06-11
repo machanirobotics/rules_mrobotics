@@ -1,0 +1,13 @@
+load("@rules_mrobotics//python:defs.bzl", "py_binary")
+
+py_binary(
+    name = "python",
+    srcs = [
+        "server.py",
+    ],
+    main = "server.py",
+    deps = [
+        "//proto:greeter_python_grpc",
+        "@rules_mrobotics_example_pip_grpcio//:pkg",
+    ],
+)

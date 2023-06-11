@@ -42,6 +42,7 @@ python_grpc_library(
     name = "greeter_python_grpc",
     protos = [
         "greeter_grpc",
+        "thing_proto",
     ],
 )
 

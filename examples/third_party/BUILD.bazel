@@ -9,7 +9,7 @@ toolchain(
 
 python_proto_toolchain(
     name = "python_proto_toolchain_impl",
-    grpcio = "@rules_mrobotics_pip_grpcio//:pkg",
+    grpcio = "@rules_mrobotics_example_pip_grpcio//:pkg",
 )
 
 toolchain(
