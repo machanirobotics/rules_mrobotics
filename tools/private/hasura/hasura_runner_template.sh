@@ -33,6 +33,7 @@ case "$COMMAND" in
         hasura console --skip-update-check
         ;;
     "export_schema")
+        cd "$BUILD_WORKSPACE_DIRECTORY/@PACKAGE@"
         get-graphql-schema @URL@ > @OUTPUT@
         printf "Done. Schema exported to @PACKAGE@/@OUTPUT@\n"
         ;;
