@@ -4,6 +4,7 @@ installed.
 """
 
 load("//tools/private/hasura:runner.bzl", "create_runner")
+load("//tools/private/hasura:project.bzl", "HasuraProjectInfo", "project_info_to_files")
 
 def _create_migration_impl(ctx):
     runner = create_runner(ctx, "create_migration", {
@@ -23,12 +24,20 @@ create_migration = rule(
 )
 
 def _run_console_impl(ctx):
-    runner = create_runner(ctx, "console", {})
-    return DefaultInfo(executable = runner)
+    info = ctx.attr.project[HasuraProjectInfo]
+    runner = create_runner(ctx, "console", {
+        "@HASURA_CONFIG_PATH@": info.config.path,
+    })
+
+    return DefaultInfo(
+        executable = runner,
+        runfiles = ctx.runfiles(project_info_to_files(info)),
+    )
 
 run_console = rule(
     implementation = _run_console_impl,
     attrs = {
+        "project": attr.label(mandatory = True, providers = [HasuraProjectInfo]),
         "_template": attr.label(default = "//tools/private/hasura:hasura_runner_template.sh", allow_single_file = True),
     },
     executable = True,
@@ -52,16 +61,23 @@ export_schema = rule(
 )
 
 def _apply_migration_impl(ctx):
+    info = ctx.attr.project[HasuraProjectInfo]
     runner = create_runner(ctx, "apply_migration", {
         "@DATABASE@": ctx.attr.database,
+        "@HASURA_CONFIG_PATH@": info.config.path,
     })
-    return DefaultInfo(executable = runner)
+
+    return DefaultInfo(
+        executable = runner,
+        runfiles = ctx.runfiles(project_info_to_files(info)),
+    )
 
 apply_migration = rule(
     implementation = _apply_migration_impl,
     attrs = {
         "_template": attr.label(default = "//tools/private/hasura:hasura_runner_template.sh", allow_single_file = True),
         "database": attr.string(mandatory = True),
+        "project": attr.label(mandatory = True, providers = [HasuraProjectInfo]),
     },
     executable = True,
 )

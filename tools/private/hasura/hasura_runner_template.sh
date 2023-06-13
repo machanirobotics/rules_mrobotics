@@ -2,7 +2,6 @@
 
 set -eo pipefail
 
-cd "$BUILD_WORKSPACE_DIRECTORY/@PACKAGE@"
 COMMAND="@COMMAND@"
 
 function fatal {
@@ -14,16 +13,23 @@ function fatal {
 
 case "$COMMAND" in
     "create_migration")
+        cd "$BUILD_WORKSPACE_DIRECTORY/@PACKAGE@"
         rm -rf migrations/*
         hasura migrate create "init" --from-server --schema @SCHEMAS@ --database-name @DATABASE@ --skip-update-check
         ;;
     "apply_migration")
+        cd $(dirname @HASURA_CONFIG_PATH@)
+        
         hasura metadata apply --skip-update-check
         hasura migrate apply --database-name @DATABASE@ --skip-update-check
         hasura metadata reload --skip-update-check
-        find seeds -type f -iname "*.sql" -exec sh -c 'hasura seed apply --file `basename "$1"` --database-name @DATABASE@' sh {} \;
+    
+        while IFS= read -r -d $'\0' file; do
+            hasura seed apply --file $(basename "$file") --database-name @DATABASE@
+        done < <(find -L seeds -type f -iname "*.sql" -print0 | sort -z)
         ;;
     "console")
+        cd "$BUILD_WORKSPACE_DIRECTORY/@PACKAGE@"
         hasura console --skip-update-check
         ;;
     "export_schema")
