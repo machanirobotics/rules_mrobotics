@@ -16,6 +16,10 @@ load("@rules_python//python:repositories.bzl", "py_repositories", "python_regist
 # rules proto grpc
 load("@rules_proto_grpc//:repositories.bzl", "rules_proto_grpc_toolchains")
 
+# google apis
+load("@googleapis//:repository_rules.bzl", "switched_rules_by_language")
+
+
 # buildifier: disable=function-docstring
 # buildifier: disable=unnamed-macro
 def load_toolchains():
@@ -43,9 +47,14 @@ def load_toolchains():
 
     # go:
     go_rules_dependencies()
-    go_register_toolchains(version = "1.20.3")
+    go_register_toolchains(version = "1.20.5")
 
     gazelle_dependencies(go_repository_default_config = "//:WORKSPACE.bazel")
+
+
+    switched_rules_by_language(
+        name = "com_google_googleapis_imports",
+    )
 
     # python:
     py_repositories()
